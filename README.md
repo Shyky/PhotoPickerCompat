@@ -36,8 +36,8 @@
 | 路径        | 适用API | 底层实现                                          | 体验 |
 |-----------|-------|-----------------------------------------------|----|
 | **系统选择器** | 33+   | `PickVisualMedia` / `PickMultipleVisualMedia` | 原生 |
-| **系统降级**  | 26–32 | `ACTION_GET_CONTENT` / `GetMultipleContents`  | 原生 |
-| **内置网格**  | 26+   | BottomSheet + RecyclerView + Coil             | 统一 |
+| **系统降级**  | 23–32 | `ACTION_GET_CONTENT` / `GetMultipleContents`  | 原生 |
+| **内置网格**  | 23+   | BottomSheet + RecyclerView + Coil             | 统一 |
 
 ### 1.2 核心能力
 
@@ -319,12 +319,34 @@ compat/util/                         # 工具 (2)
 
 ### 4.1 添加依赖
 
+> 通过 [JitPack](https://jitpack.io) 发布，零配置，提交代码即自动构建。
+
+**第 1 步**：在根 `settings.gradle.kts` 中添加 JitPack 仓库：
+
 ```kotlin
-// 主工程 build.gradle.kts
-dependencies {
-    implementation(project(":library-photo-picker-compat"))
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url = uri("https://jitpack.io") }  // ← 添加 JitPack
+    }
 }
 ```
+
+**第 2 步**：在 app 模块的 `build.gradle.kts` 中添加依赖：
+
+```kotlin
+dependencies {
+    // 最新快照版本（跟随 main 分支 HEAD）
+    implementation("com.github.Shyky:PhotoPickerCompat:library-photo-picker-compat:main-SNAPSHOT")
+
+    // 或固定 Release 版本（推荐）：
+    // implementation("com.github.Shyky:PhotoPickerCompat:library-photo-picker-compat:1.0.0")
+}
+```
+
+> **模块名说明**：仓库包含 library (`library-photo-picker-compat`) 和 demo app (`app`) 两个模块。JitPack 格式为 `仓库名:模块名:版本`。
 
 ### 4.2 最简用法：系统选择器
 
@@ -362,7 +384,7 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
-### 4.3 内置网格选择器（统一体验，所有API 26+）
+### 4.3 内置网格选择器（统一体验，所有API 23+）
 
 ```kotlin
 class MyFragment : Fragment() {
@@ -1693,6 +1715,7 @@ plugins { +WatermarkPlugin() }
 |-------|------------------------------------------|-------------------------------------------------------------------------------|
 | 33+   | `READ_MEDIA_IMAGES` + `READ_MEDIA_VIDEO` | `<uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />`     |
 | 26–32 | `READ_EXTERNAL_STORAGE`                  | `<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />` |
+| 23–25 | `READ_EXTERNAL_STORAGE`                  | `<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />` |
 
 ### 14.3 运行时权限请求示例
 
@@ -1720,15 +1743,17 @@ private fun checkPermissionAndPick() {
 
 ### 15.1 Android 版本覆盖
 
-| 功能                          | API 26–28 | API 29–32 | API 33–34 | API 35+ |
-|-----------------------------|-----------|-----------|-----------|---------|
-| 系统 PhotoPicker              | ✗         | ✗         | ✅         | ✅       |
-| 系统降级 (GetContent)           | ✅         | ✅         | ✗         | ✗       |
-| 内置网格选择器                     | ✅         | ✅         | ✅         | ✅       |
-| `QUERY_ARG_OFFSET/LIMIT`    | ✅         | ✅         | ✅         | ✅       |
-| `PickVisualMedia`           | ✗         | ✗         | ✅         | ✅       |
-| 默认相册标签页                     | ✗         | ✗         | ✗         | ✅       |
-| Coil `allowHardware(false)` | ✅         | ✗         | ✗         | ✗       |
+| 功能                          | API 23–25 | API 26–28 | API 29–32 | API 33–34 | API 35+ |
+|-----------------------------|-----------|-----------|-----------|-----------|---------|
+| 系统 PhotoPicker              | ✗         | ✗         | ✗         | ✅         | ✅       |
+| 系统降级 (GetContent)           | ✅         | ✅         | ✅         | ✗         | ✗       |
+| 内置网格选择器                     | ✅         | ✅         | ✅         | ✅         | ✅       |
+| `QUERY_ARG_OFFSET/LIMIT`    | ✗※        | ✅         | ✅         | ✅         | ✅       |
+| `PickVisualMedia`           | ✗         | ✗         | ✗         | ✅         | ✅       |
+| 默认相册标签页                     | ✗         | ✗         | ✗         | ✗         | ✅       |
+| Coil `allowHardware(false)` | ✅         | ✅         | ✗         | ✗         | ✗       |
+
+> ※ API 23-25 降级为经典 `query() + sortOrder + 手动截取`，功能等价。
 
 ### 15.2 厂商 ROM 兼容
 
