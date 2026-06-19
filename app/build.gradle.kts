@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":library-photo-picker-compat"))
+//    implementation(project(":library-photo-picker-compat"))
 
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat)
@@ -48,6 +48,9 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.material)
+
+    // ✅ 修正为 4 段
+    implementation(libs.photopickercompat)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)

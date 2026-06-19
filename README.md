@@ -339,14 +339,15 @@ dependencyResolutionManagement {
 ```kotlin
 dependencies {
     // 最新快照版本（跟随 main 分支 HEAD）
-    implementation("com.github.Shyky:PhotoPickerCompat:library-photo-picker-compat:main-SNAPSHOT")
+    implementation("com.github.Shyky.PhotoPickerCompat:library-photo-picker-compat:main-SNAPSHOT")
 
     // 或固定 Release 版本（推荐）：
-    // implementation("com.github.Shyky:PhotoPickerCompat:library-photo-picker-compat:1.0.0")
+    // implementation("com.github.Shyky.PhotoPickerCompat:library-photo-picker-compat:1.0.0")
 }
 ```
 
-> **模块名说明**：仓库包含 library (`library-photo-picker-compat`) 和 demo app (`app`) 两个模块。JitPack 格式为 `仓库名:模块名:版本`。
+> **模块名说明**：仓库包含 library (`library-photo-picker-compat`) 和 demo app (`app`) 两个模块。JitPack
+> 格式为 `仓库名:模块名:版本`。
 
 ### 4.2 最简用法：系统选择器
 
