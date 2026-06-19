@@ -72,7 +72,7 @@ object PhotoPickerCompat {
      * @param defaultTab 打开选择器时的默认标签页（[PickDefaultTab.PHOTOS] 或 [PickDefaultTab.ALBUMS]），
      *   仅在 API 35+ 生效，低版本自动使用系统默认行为。
      */
-    fun imageAndVideo(defaultTab: PickDefaultTab = PickDefaultTab.UNSPECIFIED): PickImageAndVideoContract =
+    fun media(defaultTab: PickDefaultTab = PickDefaultTab.UNSPECIFIED): PickImageAndVideoContract =
         PickImageAndVideoContract(defaultTab)
 
     /**
@@ -105,6 +105,5 @@ object PhotoPickerCompat {
      * pickGrid.launch(Unit)
      * ```
      */
-    fun gridPicker(maxCount: Int = 9): GridPickerContract =
-        GridPickerContract(maxCount)
+    fun custom(maxCount: Int = 9): GridPickerContract = GridPickerContract(maxCount)
 }

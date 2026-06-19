@@ -204,23 +204,21 @@ class PhotoPickerAdapter(
 
     override fun getItemCount() = data.size
 
-    /** 预计算的条目尺寸（正方形） */
+    /** 预计算的条目正方形边长（px）— RecyclerView 宽度 / 3 */
     private var itemSize = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, vt: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(context)
+        // ★ 用 RecyclerView 的实际宽度计算正方形边长（不含任意 padding）
+        if (itemSize == 0 && parent.width > 0) {
+            itemSize = parent.width / 3
+        }
         return when (vt) {
             TYPE_SECTION -> SectionVH(
                 ItemSectionHeaderBinding.inflate(inflater, parent, false)
             )
 
             else -> {
-                // ★ 预计算正方形尺寸 — 避免 view.post{} 导致的布局延迟
-                if (itemSize == 0 && parent.width > 0) {
-                    val span = 3
-                    val pad = parent.context.resources.displayMetrics.density.toInt()
-                    itemSize = (parent.width - 2 * pad) / span
-                }
                 val binding = ItemMediaGridBinding.inflate(inflater, parent, false)
                 if (itemSize > 0) {
                     binding.root.layoutParams.height = itemSize

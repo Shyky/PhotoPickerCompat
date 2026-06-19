@@ -193,6 +193,21 @@ class MediaPickerBottomSheetFragment(
         rvPhotos.adapter = photosAdapter
         cachedGridLayoutManager!!.spanSizeLookup = photosAdapter!!.spanSizeLookup
 
+        // ★ 首次 layout 完成后强制计算正方形尺寸
+        // 解决 ViewPager2 内 RecyclerView 首次 layout 时 width==0 导致图片条目无高度
+        rvPhotos.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
+            private var done = false
+            override fun onLayoutChange(
+                v: View?, l: Int, t: Int, r: Int, b: Int,
+                ol: Int, ot: Int, or: Int, ob: Int
+            ) {
+                if (!done && r - l > 0) {
+                    done = true
+                    photosAdapter?.recalcSquareSize(rvPhotos)
+                }
+            }
+        })
+
         // ── 影集 Tab（占位） ──
         val rvAlbums = RecyclerView(ctx).apply {
             layoutManager = GridLayoutManager(ctx, 2)

@@ -75,16 +75,40 @@ class GroupedAdapter(
         else -> TYPE_ITEM
     }
 
-    /** 预计算的正方形条目尺寸 — 在 onCreateViewHolder 中首次计算后缓存 */
-    private var precomputedSquareSize = 0
+    /** 预计算的条目正方形边长（px）— RecyclerView 宽度 / 3 */
+    private var itemSquareSize = 0
+
+    /**
+     * ★ 从 RecyclerView 宽度重新计算正方形尺寸。
+     * 在 RecyclerView 第一次完成 layout 后调用。
+     */
+    fun recalcSquareSize(recyclerView: RecyclerView) {
+        val w = recyclerView.width
+        if (w <= 0) return
+        itemSquareSize = w / 3
+        // ★ 强制刷新全部可见条目高度
+        for (i in 0 until recyclerView.childCount) {
+            val child = recyclerView.getChildAt(i) ?: continue
+            val pos = recyclerView.getChildAdapterPosition(child)
+            if (pos == RecyclerView.NO_POSITION) continue
+            // ★ 加 bounds 检查防止空列表时越界
+            if (pos < 0 || pos >= items.size) continue
+            if (getItemViewType(pos) == TYPE_ITEM) {
+                child.layoutParams?.let { lp ->
+                    lp.height = itemSquareSize
+                    child.layoutParams = lp
+                }
+            }
+        }
+        // ★ 触发一次完整重排，确保被回收的 ViewHolder 也更新高度
+        recyclerView.requestLayout()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        // ★ 首次创建时预计算正方形尺寸，避免每个 VH 都 view.post{}
-        if (viewType == TYPE_ITEM && precomputedSquareSize == 0 && parent.width > 0) {
-            val span = 3
-            val pad = (4 * parent.context.resources.displayMetrics.density).toInt()
-            precomputedSquareSize = (parent.width - 2 * pad) / span
+        // ★ 用 RecyclerView 的实际宽度计算正方形边长
+        if (viewType == TYPE_ITEM && itemSquareSize == 0 && parent.width > 0) {
+            itemSquareSize = parent.width / 3
         }
         return when (viewType) {
             TYPE_HEADER -> HeaderViewHolder(
@@ -93,8 +117,8 @@ class GroupedAdapter(
 
             else -> {
                 val binding = ItemMediaGridBinding.inflate(inflater, parent, false)
-                if (precomputedSquareSize > 0) {
-                    binding.root.layoutParams.height = precomputedSquareSize
+                if (itemSquareSize > 0) {
+                    binding.root.layoutParams.height = itemSquareSize
                 }
                 ItemViewHolder(binding)
             }
