@@ -30,22 +30,34 @@ android {
 // ★ JitPack 适配：构建 AAR 后复制到 Maven 目录并生成 POM
 val pomDirPath = "maven/com/github/Shyky/PhotoPickerCompat/library-photo-picker-compat/1.0.0"
 
-tasks.register("jitpackInstall") {
-    dependsOn("assembleRelease")
-    notCompatibleWithConfigurationCache("jitpackInstall 在 doLast 中写入文件，不兼容 config cache")
-    doLast {
-        val buildDir = project.buildDir
-        val output = File(buildDir, pomDirPath)
-        output.mkdirs()
-        // ★ POM
-        File(output, "library-photo-picker-compat-1.0.0.pom").writeText("""<?xml version="1.0" encoding="UTF-8"?>
+val pomXml = """<?xml version="1.0" encoding="UTF-8"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <modelVersion>4.0.0</modelVersion><groupId>com.github.Shyky.PhotoPickerCompat</groupId>
 <artifactId>library-photo-picker-compat</artifactId><version>1.0.0</version><packaging>aar</packaging>
-</project>""")
-        // ★ AAR
-        val aar = File(buildDir, "outputs/aar/library-photo-picker-compat-release.aar")
-        aar.copyTo(File(output, "library-photo-picker-compat-1.0.0.aar"), overwrite = true)
+</project>"""
+
+tasks.register("jitpackInstall") {
+    dependsOn("assembleRelease")
+    notCompatibleWithConfigurationCache("写入文件，不兼容 config cache")
+    doLast {
+        val buildDir = project.buildDir
+
+        // ★ 1. Maven 本地仓库 (~/.m2) — JitPack 首先搜这里
+        val m2Dir = File(System.getProperty("user.home"), ".m2/repository/com/github/Shyky/PhotoPickerCompat/library-photo-picker-compat/1.0.0")
+        m2Dir.mkdirs()
+        File(m2Dir, "library-photo-picker-compat-1.0.0.pom").writeText(pomXml)
+        File(buildDir, "outputs/aar/library-photo-picker-compat-release.aar")
+            .copyTo(File(m2Dir, "library-photo-picker-compat-1.0.0.aar"), overwrite = true)
+
+        // ★ 2. build/pom.xml — JitPack 的备选搜索路径
+        File(buildDir, "pom.xml").writeText(pomXml)
+
+        // ★ 3. build/maven/... — JitPack 递归搜索的第三个路径
+        val mavenDir = File(buildDir, pomDirPath)
+        mavenDir.mkdirs()
+        File(mavenDir, "library-photo-picker-compat-1.0.0.pom").writeText(pomXml)
+        File(buildDir, "outputs/aar/library-photo-picker-compat-release.aar")
+            .copyTo(File(mavenDir, "library-photo-picker-compat-1.0.0.aar"), overwrite = true)
     }
 }
 
