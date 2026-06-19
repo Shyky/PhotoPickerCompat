@@ -3,4 +3,4 @@ jdk:
   - openjdk21
 
 install:
-  - ./gradlew :library-photo-picker-compat:assembleRelease
+  - ./gradlew :library-photo-picker-compat:jitpackInstall

@@ -1,35 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FirstFragment">
+    android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="16dp">
 
-        <Button
-            android:id="@+id/button_first"
+        <!-- 标题 -->
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/next"
-            app:layout_constraintBottom_toTopOf="@id/textview_first"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="📷 PhotoPickerCompat 示例"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
 
         <TextView
-            android:id="@+id/textview_first"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/lorem_ipsum"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_first" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+            android:text="点击下方按钮测试各种选择模式"
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginBottom="16dp" />
+
+        <!-- ====== 图片选择 ====== -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="── 图片选择 ──"
+            android:textStyle="bold"
+            android:textColor="#1976D2"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnSingleImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="选择单张图片"
+            android:textAllCaps="false"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_marginBottom="4dp" />
+
+        <Button
+            android:id="@+id/btnMultipleImages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="选择多张图片（最多 9 张）"
+            android:textAllCaps="false"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_marginBottom="4dp" />
+
+        <!-- ====== 视频选择 ====== -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="── 视频选择 ──"
+            android:textStyle="bold"
+            android:textColor="#388E3C"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnSingleVideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="选择单个视频"
+            android:textAllCaps="false"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_marginBottom="4dp" />
+
+        <Button
+            android:id="@+id/btnMultipleVideos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="选择多个视频（最多 5 个）"
+            android:textAllCaps="false"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_marginBottom="4dp" />
+
+        <!-- ====== 混合选择 ====== -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="── 混合选择 ──"
+            android:textStyle="bold"
+            android:textColor="#E64A19"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnSingleMedia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="选择图片或视频（单张）"
+            android:textAllCaps="false"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_marginBottom="4dp" />
+
+        <Button
+            android:id="@+id/btnMultipleMedia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="选择图片+视频混合（最多 9 个）"
+            android:textAllCaps="false"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_marginBottom="4dp" />
+
+        <!-- ====== 自定义网格 ====== -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="── 内置网格选择器 ──"
+            android:textStyle="bold"
+            android:textColor="#7B1FA2"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnGridPicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="自定义网格多选（长按滑动）"
+            android:textAllCaps="false"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_marginBottom="4dp" />
+
+        <Button
+            android:id="@+id/btnQuickRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DSL 一行注册（Fragment 快速版）"
+            android:textAllCaps="false"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_marginBottom="4dp" />
+
+        <!-- ====== 选择结果 ====== -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="── 选择结果 ──"
+            android:textStyle="bold"
+            android:textColor="#616161"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tvResultCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="尚未选择任何文件"
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginBottom="8dp" />
+
+        <!-- 缩略图容器 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvResult"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:clipToPadding="false" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+
+    </LinearLayout>
+</ScrollView>

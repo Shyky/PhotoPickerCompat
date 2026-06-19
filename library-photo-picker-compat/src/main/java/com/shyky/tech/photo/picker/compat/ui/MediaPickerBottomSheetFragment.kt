@@ -98,8 +98,14 @@ class MediaPickerBottomSheetFragment(
         return binding.root
     }
 
+    /** 是否已经初始化过（防止 onViewCreated 重复回调） */
+    private var setupDone = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (setupDone) return
+        setupDone = true
 
         // 1. ★ 先初始化照片 Tab（设置 adapter + helper → ViewPager2）
         setupPhotoTab()
@@ -256,17 +262,20 @@ class MediaPickerBottomSheetFragment(
     private fun loadInitialMediaPage() {
         mediaLoading = true
         lifecycleScope.launch {
-            val media = withContext(Dispatchers.IO) {
-                dataLoader?.loadPage(0, null) ?: emptyList()
+            try {
+                val media = withContext(Dispatchers.IO) {
+                    dataLoader?.loadPage(0, null) ?: emptyList()
+                }
+                val grouped = DateSectionHelper.insertSections(media) { it.dateModified }
+                photosData.clear()
+                photosData.addAll(convertToAdapterItems(grouped))
+                mediaHasMore = media.size >= MediaDataLoader.PAGE_SIZE
+                mediaOffset = media.size
+                photosAdapter?.notifyDataSetChanged()
+                photosHelper?.validatePositions()
+            } finally {
+                mediaLoading = false
             }
-            val grouped = DateSectionHelper.insertSections(media) { it.dateModified }
-            photosData.clear()
-            photosData.addAll(convertToAdapterItems(grouped))
-            mediaHasMore = media.size >= MediaDataLoader.PAGE_SIZE
-            mediaOffset = media.size
-            photosAdapter?.notifyDataSetChanged()
-            photosHelper?.validatePositions()
-            mediaLoading = false
         }
     }
 
@@ -275,21 +284,23 @@ class MediaPickerBottomSheetFragment(
         if (mediaLoading || !mediaHasMore) return
         mediaLoading = true
         lifecycleScope.launch {
-            val media = withContext(Dispatchers.IO) {
-                dataLoader?.loadPage(mediaOffset, null) ?: emptyList()
-            }
-            if (media.isEmpty()) {
-                mediaHasMore = false
+            try {
+                val media = withContext(Dispatchers.IO) {
+                    dataLoader?.loadPage(mediaOffset, null) ?: emptyList()
+                }
+                if (media.isEmpty()) {
+                    mediaHasMore = false
+                    return@launch
+                }
+                val grouped = DateSectionHelper.insertSections(media) { it.dateModified }
+                val oldSize = photosData.size
+                photosData.addAll(convertToAdapterItems(grouped))
+                mediaOffset += media.size
+                mediaHasMore = media.size >= MediaDataLoader.PAGE_SIZE
+                photosAdapter?.notifyItemRangeInserted(oldSize, photosData.size - oldSize)
+            } finally {
                 mediaLoading = false
-                return@launch
             }
-            val grouped = DateSectionHelper.insertSections(media) { it.dateModified }
-            val oldSize = photosData.size
-            photosData.addAll(convertToAdapterItems(grouped))
-            mediaOffset += media.size
-            mediaHasMore = media.size >= MediaDataLoader.PAGE_SIZE
-            photosAdapter?.notifyItemRangeInserted(oldSize, photosData.size - oldSize)
-            mediaLoading = false
         }
     }
 
@@ -349,6 +360,8 @@ class MediaPickerBottomSheetFragment(
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // ★ 重置初始化标志 — onDestroyView → onCreateView 后可重新初始化
+        setupDone = false
         // ★ 清空所有引用，防止内存泄漏
         cachedSheetBehavior = null
         cachedGridLayoutManager = null

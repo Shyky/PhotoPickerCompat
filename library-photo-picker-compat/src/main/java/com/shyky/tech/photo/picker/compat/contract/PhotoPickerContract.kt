@@ -124,20 +124,24 @@ class PickImageAndVideoContract(
 
     override fun createIntent(context: Context, input: Unit): Intent {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val request = if (Build.VERSION.SDK_INT >= 35) {
-                PickVisualMediaRequest(
-                    mediaType = ActivityResultContracts.PickVisualMedia.ImageAndVideo,
-                    defaultTab = when (defaultTab) {
-                        PickDefaultTab.ALBUMS ->
-                            ActivityResultContracts.PickVisualMedia.DefaultTab.AlbumsTab
+            val request =
+                if (Build.VERSION.SDK_INT >= 35 && defaultTab != PickDefaultTab.UNSPECIFIED) {
+                    PickVisualMediaRequest(
+                        mediaType = ActivityResultContracts.PickVisualMedia.ImageAndVideo,
+                        defaultTab = when (defaultTab) {
+                            PickDefaultTab.ALBUMS ->
+                                ActivityResultContracts.PickVisualMedia.DefaultTab.AlbumsTab
 
-                        else ->
-                            ActivityResultContracts.PickVisualMedia.DefaultTab.PhotosTab
-                    }
-                )
-            } else {
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)
-            }
+                            PickDefaultTab.PHOTOS ->
+                                ActivityResultContracts.PickVisualMedia.DefaultTab.PhotosTab
+
+                            else ->
+                                ActivityResultContracts.PickVisualMedia.DefaultTab.PhotosTab
+                        }
+                    )
+                } else {
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)
+                }
             ActivityResultContracts.PickVisualMedia().createIntent(context, request)
         } else {
             @Suppress("DEPRECATION")
@@ -177,20 +181,24 @@ class PickMultipleMediaContract(
 
     override fun createIntent(context: Context, input: Unit): Intent {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val request = if (Build.VERSION.SDK_INT >= 35) {
-                PickVisualMediaRequest(
-                    mediaType = ActivityResultContracts.PickVisualMedia.ImageAndVideo,
-                    defaultTab = when (defaultTab) {
-                        PickDefaultTab.ALBUMS ->
-                            ActivityResultContracts.PickVisualMedia.DefaultTab.AlbumsTab
+            val request =
+                if (Build.VERSION.SDK_INT >= 35 && defaultTab != PickDefaultTab.UNSPECIFIED) {
+                    PickVisualMediaRequest(
+                        mediaType = ActivityResultContracts.PickVisualMedia.ImageAndVideo,
+                        defaultTab = when (defaultTab) {
+                            PickDefaultTab.ALBUMS ->
+                                ActivityResultContracts.PickVisualMedia.DefaultTab.AlbumsTab
 
-                        else ->
-                            ActivityResultContracts.PickVisualMedia.DefaultTab.PhotosTab
-                    }
-                )
-            } else {
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)
-            }
+                            PickDefaultTab.PHOTOS ->
+                                ActivityResultContracts.PickVisualMedia.DefaultTab.PhotosTab
+
+                            else ->
+                                ActivityResultContracts.PickVisualMedia.DefaultTab.PhotosTab
+                        }
+                    )
+                } else {
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)
+                }
             val contract = if (maxCount != null) {
                 ActivityResultContracts.PickMultipleVisualMedia(maxCount)
             } else {
