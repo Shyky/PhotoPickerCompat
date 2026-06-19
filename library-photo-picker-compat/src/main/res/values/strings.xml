@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pp_close">关闭</string>
+    <string name="pp_select_photos">选择照片</string>
+    <string name="pp_select">选择</string>
+    <string name="pp_cancel">取消</string>
+    <string name="pp_add">添加</string>
+    <string name="pp_add_count">添加 (%d)</string>
+    <string name="pp_all_photos">所有照片</string>
+    <string name="pp_take_photo">拍照</string>
+    <string name="pp_photo_selected">照片，已选中</string>
+    <string name="pp_video_duration">视频，时长 %s</string>
+    <string name="pp_no_permission">需要存储权限才能加载图片</string>
+    <string name="pp_permission_go_settings">去设置</string>
+    <string name="pp_max_count">最多选择 %d 张</string>
+    <string name="pp_preview_title">预览</string>
+    <string name="pp_load_failed">加载失败</string>
+    <string name="pp_retry">重试</string>
+    <string name="pp_no_camera">未找到相机应用</string>
+    <string name="pp_edit">编辑</string>
+    <string name="pp_original">原图</string>
+    <string name="pp_privacy_hint">此应用只能访问您选择的照片</string>
+</resources>

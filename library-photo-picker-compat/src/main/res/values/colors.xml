@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_primary">#FFFFFF</color>
+    <color name="bg_secondary">#F5F5F5</color>
+    <color name="divider">#E0E0E0</color>
+    <color name="text_primary">#1A1A1A</color>
+    <color name="text_secondary">#666666</color>
+    <color name="accent">#007AFF</color>
+    <color name="check_unselected">#CCCCCC</color>
+    <color name="mask_selected">#0D000000</color>
+    <color name="duration_bg">#99000000</color>
+    <color name="preview_overlay">#99000000</color>
+    <color name="done_btn_disabled">#CCCCCC</color>
+    <color name="camera_bg">#F2F2F2</color>
+    <color name="popup_bg">#FFFFFF</color>
+    <color name="mask_overlay">#80000000</color>
+    <color name="hint_text">#FF999999</color>
+    <color name="card_bg">#FFFFFF</color>
+</resources>

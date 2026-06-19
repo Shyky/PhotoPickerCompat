@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_section_label"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/section_header_height"
+    android:background="@color/bg_secondary"
+    android:gravity="center_vertical"
+    android:paddingStart="16dp"
+    android:textColor="@color/text_primary"
+    android:textSize="13sp"
+    android:textStyle="bold" />

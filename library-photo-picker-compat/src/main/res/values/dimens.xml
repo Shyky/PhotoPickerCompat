@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="top_bar_height">56dp</dimen>
+    <dimen name="album_bar_height">48dp</dimen>
+    <dimen name="bottom_bar_height">64dp</dimen>
+    <dimen name="section_header_height">40dp</dimen>
+    <dimen name="check_circle_size">24dp</dimen>
+    <dimen name="thumbnail_corner">4dp</dimen>
+    <dimen name="selected_thumb_size">40dp</dimen>
+    <dimen name="done_btn_radius">20dp</dimen>
+</resources>
