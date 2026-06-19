@@ -1,7 +1,6 @@
 # JitPack 构建配置
 jdk:
-  - openjdk17
+  - openjdk21
 
-# 只安装 library 模块，跳过 app 示例模块
 install:
   - ./gradlew :library-photo-picker-compat:assembleRelease
